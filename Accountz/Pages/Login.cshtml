@@ -1,0 +1,30 @@
+﻿@page
+@model Accountz.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<div>  
+    <form class="form-signin" method="post">
+
+        @if (!ModelState.IsValid)
+        {
+            <div class="alert alert-warning">
+                <h3 class="text-danger">Validation Errors</h3>
+                <div asp-validation-summary="All" class="text-left"></div>
+            </div>
+        }
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in with</h1>
+        <div class="form-group">
+            <label for="inputUsernameOrEmail" class="sr-only">Username or Email</label>
+            <input id="inputUsernameOrEmail" class="form-control" placeholder="Username or Email" asp-for="UsernameEmail" autofocus="">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" asp-for="Password">
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted">© 2018</p>
+    </form>
+</div>
+
