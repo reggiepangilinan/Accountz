@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using IdentityServer4.Events;
+﻿using IdentityServer4.Events;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Test;
@@ -12,6 +6,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Accountz.Pages
 {
@@ -30,7 +27,7 @@ namespace Accountz.Pages
         [BindProperty]
         [Required]
         public string Password { get; set; }
-        
+
         [FromQuery]
         public string ReturnUrl { get; set; }
 
@@ -47,9 +44,12 @@ namespace Accountz.Pages
             this.users = users;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if(User.Identity.IsAuthenticated)
+                return Redirect("/SecurePageProfile");
 
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -63,21 +63,19 @@ namespace Accountz.Pages
                     await events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username));
 
                     AuthenticationProperties props = null;
+
                     //Remember me
                     if (true)
-                    {
                         props = new AuthenticationProperties
                         {
                             IsPersistent = true,
                             ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromDays(30))
                         };
-                    };
                     await HttpContext.SignInAsync(user.SubjectId, user.Username, props);
 
                     if (interaction.IsValidReturnUrl(ReturnUrl) || Url.IsLocalUrl(ReturnUrl))
-                    {
                         return Redirect(ReturnUrl);
-                    }
+                    return Redirect("/SecurePageProfile");
                 }
                 else
                 {
@@ -86,7 +84,6 @@ namespace Accountz.Pages
                 }
             }
             return Page();
-
         }
     }
 }

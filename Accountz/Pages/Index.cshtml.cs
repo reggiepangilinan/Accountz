@@ -9,9 +9,12 @@ namespace Accountz.Pages
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            Redirect("Login");
+            if (User.Identity.IsAuthenticated)
+                return Redirect("/SecurePageProfile");
+
+            return Redirect("/Login");
         }
     }
 }

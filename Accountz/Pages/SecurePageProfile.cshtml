@@ -1,0 +1,20 @@
+﻿@page
+@model Accountz.Pages.SecurePageProfileModel
+@{
+    ViewData["Title"] = "SecurePageProfile";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>SecurePageProfile</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <ul>
+        @foreach(var claim in User.Claims)
+        {
+            <li>@claim.Value</li>
+        }
+    </ul>
+}
+
+<a asp-page="/Logout">Logout</a>
