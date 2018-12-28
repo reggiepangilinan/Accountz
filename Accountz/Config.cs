@@ -56,6 +56,7 @@ namespace Accountz
                         "futurestack.api"
                     },
                     AccessTokenLifetime = 3600 //1hr
+                    //AccessTokenLifetime = 30
                 }
             };
         }

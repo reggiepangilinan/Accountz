@@ -32,6 +32,7 @@ namespace Accountz
             };
 
             context.IssuedClaims.AddRange(claims.Where(x => x != null));
+
         }
 
         public async Task IsActiveAsync(IsActiveContext context)
